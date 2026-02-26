@@ -1,0 +1,14 @@
+version: '3.8' # ou a versão que você estiver usando
+
+services:
+  mysql:
+    image: mysql:8.0 # Evite usar 'latest' em bancos de dados para maior estabilidade
+    container_name: cellrepair-db
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: 123 # Senha do root (obrigatório para o container subir)
+    ports:
+      # Aqui está o segredo: A porta do seu PC (3307) redirecionando para a porta do MySQL lá dentro (3306)
+      - "3307:3306"

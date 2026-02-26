@@ -1,6 +1,6 @@
 package io.github.cellrepair.model.entity;
 
-import io.github.cellrepair.model.enums.UserRoles;
+import io.github.cellrepair.model.enums.UsuarioRoles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,7 +27,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +39,9 @@ public class User implements UserDetails {
     private String senha;
 
     @Enumerated(EnumType.STRING)
-    private UserRoles role;
+    private UsuarioRoles role;
 
-    public User(String nomeUsuario, String senha, UserRoles role){
+    public Usuario(String nomeUsuario, String senha, UsuarioRoles role){
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
         this.role = role;
@@ -49,7 +49,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRoles.ADMIN){
+        if (this.role == UsuarioRoles.ADMIN){
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_TECNICO"));
         }else {
             return List.of(new SimpleGrantedAuthority("ROLE_TECNICO"));

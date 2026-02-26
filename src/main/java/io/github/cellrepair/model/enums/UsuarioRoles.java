@@ -1,12 +1,12 @@
 package io.github.cellrepair.model.enums;
 
-public enum UserRoles {
+public enum UsuarioRoles {
     ADMIN("admin"),
     TECNINCO("tecnico");
 
     private String role;
 
-    UserRoles(String role){
+    UsuarioRoles(String role){
         this.role = role;
     }
 

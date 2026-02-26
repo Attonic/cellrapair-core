@@ -1,4 +1,10 @@
 package io.github.cellrepair.dto;
 
-public class RegisterDto {
+import io.github.cellrepair.model.enums.UsuarioRoles;
+
+public record RegisterDto (
+        String nomeUsuario,
+        String senha,
+        UsuarioRoles role
+){
 }

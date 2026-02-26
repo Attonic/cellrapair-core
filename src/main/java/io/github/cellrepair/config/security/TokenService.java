@@ -1,10 +1,10 @@
-package io.github.cellrepair.service;
+package io.github.cellrepair.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import io.github.cellrepair.model.entity.User;
+import io.github.cellrepair.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String gerarToken(User user){
+    public String gerarToken(Usuario usuario){
         try{
             Algorithm algoritimo = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("CellRepair")
-                    .withSubject(user.getNomeUsuario())
+                    .withSubject(usuario.getNomeUsuario())
                     .withExpiresAt(geradorDataDeExpiracao())
                     .sign(algoritimo);
             return token;

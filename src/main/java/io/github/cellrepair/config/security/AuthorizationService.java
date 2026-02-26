@@ -1,4 +1,4 @@
-package io.github.cellrepair.service;
+package io.github.cellrepair.config.security;
 
 import io.github.cellrepair.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

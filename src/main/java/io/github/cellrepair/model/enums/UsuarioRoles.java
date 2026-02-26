@@ -1,4 +1,4 @@
-package io.github.cellrepair.model.entity;
+package io.github.cellrepair.model.enums;
 
 public enum UserRoles {
     ADMIN("admin"),

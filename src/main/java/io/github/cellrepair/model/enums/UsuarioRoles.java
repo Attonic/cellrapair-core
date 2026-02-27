@@ -2,7 +2,7 @@ package io.github.cellrepair.model.enums;
 
 public enum UsuarioRoles {
     ADMIN("admin"),
-    TECNINCO("tecnico");
+    TECNICO("tecnico");
 
     private String role;
 

@@ -1,6 +1,5 @@
 package io.github.cellrepair.exception.handler;
 
-import io.github.cellrepair.exception.ErroRespostaDto;
 import io.github.cellrepair.exception.ICustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class GlobalExeptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErroRespostaDto> handleResponseStatusException(ResponseStatusException ex){

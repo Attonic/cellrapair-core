@@ -6,7 +6,6 @@ import io.github.cellrepair.model.entity.Cliente;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {

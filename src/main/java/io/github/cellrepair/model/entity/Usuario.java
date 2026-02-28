@@ -34,7 +34,7 @@ public class Usuario implements UserDetails {
     @Column(name = "id_usuario")
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "nome_usuario")
     private String nomeUsuario;
 
     private String senha;

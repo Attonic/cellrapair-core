@@ -1,6 +1,6 @@
 package io.github.cellrepair.controller;
 
-import io.github.cellrepair.dto.DadosListagemUsuario;
+import io.github.cellrepair.dto.UsuarioDto;
 import io.github.cellrepair.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,12 +19,10 @@ public class UsuarioController {
     private final UsuarioService userService;
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemUsuario>> findAll(
+    public ResponseEntity<Page<UsuarioDto>> findAll(
             @PageableDefault(size = 10, sort = "nomeUsuario")Pageable pageable
             ){
-        var page = userService.findAll(pageable)
-                .map(DadosListagemUsuario::new);
-        return ResponseEntity.ok(page);
-    }
-
+        var usuarios = userService.findAll(pageable);
+        return ResponseEntity.ok().body(usuarios);
+}
 }

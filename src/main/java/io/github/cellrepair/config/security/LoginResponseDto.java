@@ -1,4 +1,4 @@
-package io.github.cellrepair.dto;
+package io.github.cellrepair.config.security;
 
 public record LoginResponseDto(
         String token

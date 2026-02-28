@@ -1,8 +1,8 @@
 package io.github.cellrepair.controller;
 
-import io.github.cellrepair.dto.AuthenticationDto;
-import io.github.cellrepair.dto.LoginResponseDto;
-import io.github.cellrepair.dto.RegisterDto;
+import io.github.cellrepair.config.security.AuthenticationDto;
+import io.github.cellrepair.config.security.LoginResponseDto;
+import io.github.cellrepair.dto.UsuarioDto;
 import io.github.cellrepair.exception.ConflitoException;
 import io.github.cellrepair.model.entity.Usuario;
 import io.github.cellrepair.repository.UserRepository;
@@ -36,8 +36,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
+    //apagarDepois
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDto dto){
+    public ResponseEntity register(@RequestBody @Valid UsuarioDto dto){
         if (repository.findByNomeUsuario(dto.nomeUsuario()) != null){
             throw new ConflitoException("Nome de Usuário já cadastrado.");
         }

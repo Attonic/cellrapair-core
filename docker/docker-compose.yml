@@ -1,14 +1,19 @@
-version: '3.8' # ou a versão que você estiver usando
+version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.0 # Evite usar 'latest' em bancos de dados para maior estabilidade
+    image: mysql:8.0
     container_name: cellrepair-db
     environment:
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: cellrepair
       MYSQL_USER: admin
       MYSQL_PASSWORD: 123
-      MYSQL_ROOT_PASSWORD: 123 # Senha do root (obrigatório para o container subir)
+      MYSQL_ROOT_PASSWORD: 123
     ports:
-      # Aqui está o segredo: A porta do seu PC (3307) redirecionando para a porta do MySQL lá dentro (3306)
       - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

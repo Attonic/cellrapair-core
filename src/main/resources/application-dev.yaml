@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/cellrepair
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:ev-secret-key-muito-longa-para-evitar-erros-de-tamanho-minimo-32-caracteres}

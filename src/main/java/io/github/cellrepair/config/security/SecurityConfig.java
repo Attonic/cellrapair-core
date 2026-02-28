@@ -30,8 +30,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
+                    //apagar depois
                     authorize.requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll();
-                    //authorize.requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN");
+
+                    authorize.requestMatchers(HttpMethod.POST, "/auth/register", "/clientes", "/tecnicos").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/clientes", "/tecnicos", "/usuarios").hasRole("ADMIN");
 
                     authorize.anyRequest().authenticated();
                 })

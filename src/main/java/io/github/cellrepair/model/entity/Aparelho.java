@@ -1,16 +1,23 @@
 package io.github.cellrepair.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "aparelho")
@@ -32,5 +39,8 @@ public class Aparelho implements Serializable {
 
     @Column(length = 45)
     private String versao;
+
+    @OneToMany(mappedBy = "aparelho", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrdemServico> ordensServico = new ArrayList<>();
 
 }

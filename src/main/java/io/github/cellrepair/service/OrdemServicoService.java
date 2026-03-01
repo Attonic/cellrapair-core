@@ -14,4 +14,6 @@ public interface OrdemServicoService {
 
     OrdemServicoDto update(OrdemServicoDto ordemServicoDto, Long id);
 
+    OrdemServicoDto updateItemOs(OrdemServicoDto ordemServicoDto, Long id, Long idItemOs);
+
 }

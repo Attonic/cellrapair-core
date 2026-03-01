@@ -1,6 +1,7 @@
 package io.github.cellrepair.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.github.cellrepair.dto.ItemOsDto;
 import io.github.cellrepair.dto.OrdemServicoDto;
 import io.github.cellrepair.service.OrdemServicoService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,14 @@ public class OrdemServicoController {
 
     @GetMapping
     public ResponseEntity<Page<OrdemServicoDto>> buscarPorTodos(
-            @PageableDefault(size = 10, sort = "id")Pageable pageable
-            ){
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
+    ) {
         var ordensServicos = ordemServicoService.findAll(pageable);
         return ResponseEntity.ok().body(ordensServicos);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<OrdemServicoDto> buscarPorId(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<OrdemServicoDto> buscarPorId(@PathVariable Long id) {
         var ordemServico = ordemServicoService.findById(id);
         return ResponseEntity.ok().body(ordemServico);
     }
@@ -46,7 +47,7 @@ public class OrdemServicoController {
             @JsonView(OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class)
             @Validated(OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class)
             OrdemServicoDto ordemServicoDto
-    ){
+    ) {
         var ordemServico = ordemServicoService.save(ordemServicoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ordemServico);
     }
@@ -58,9 +59,9 @@ public class OrdemServicoController {
             @JsonView(OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class)
             @Validated(OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class)
             OrdemServicoDto ordemServicoDto
-    ){
+    ) {
         var ordemServico = ordemServicoService.update(ordemServicoDto, id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ordemServico);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ordemServico);
     }
 
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "peca")
 @Data
@@ -36,10 +38,10 @@ public class Peca {
     private Integer estoqueMaximo;
 
     @Column(name = "preco_custo")
-    private Double precoCusto;
+    private BigDecimal precoCusto;
 
     @Column(name = "preco_venda")
-    private Double precoVenda;
+    private BigDecimal precoVenda;
 
     @Column(name = "fornecedor", length = 100)
     private String fornecedor;

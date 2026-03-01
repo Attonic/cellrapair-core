@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,9 +16,12 @@ import java.math.BigDecimal;
 @ToString
 public class OrdemServicoDto {
 
-    public interface OrdemServicoView{
-        public static interface OrdemServicoPut {}
-        public static interface OrdemServicoPost {}
+    public interface OrdemServicoView {
+        public static interface OrdemServicoPut {
+        }
+
+        public static interface OrdemServicoPost {
+        }
     }
 
 
@@ -47,7 +51,7 @@ public class OrdemServicoDto {
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
     @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-             message = "Cliente da O.S deve ser informado.")
+            message = "Cliente da O.S deve ser informado.")
     private Long clienteId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
@@ -60,6 +64,8 @@ public class OrdemServicoDto {
             message = "Técnico da O.S deve ser informado.")
     private Long tecnicoId;
 
+    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
+    private List<AnexoOsDto> anexos;
 
     private Long usuarioId;
 

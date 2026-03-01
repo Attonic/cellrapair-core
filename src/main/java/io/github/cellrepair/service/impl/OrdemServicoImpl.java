@@ -2,25 +2,25 @@ package io.github.cellrepair.service.impl;
 
 import io.github.cellrepair.dto.OrdemServicoDto;
 import io.github.cellrepair.exception.NenhumResultadoException;
+import io.github.cellrepair.mapper.AnexoOsMapper;
 import io.github.cellrepair.mapper.OrdemServicoMapper;
 import io.github.cellrepair.model.entity.OrdemServico;
 import io.github.cellrepair.model.entity.Usuario;
-import io.github.cellrepair.repository.AparelhoRepository;
-import io.github.cellrepair.repository.ClienteRepository;
-import io.github.cellrepair.repository.OrdemServicoRepository;
-import io.github.cellrepair.repository.TecnicoRepository;
-import io.github.cellrepair.repository.UserRepository;
+import io.github.cellrepair.repository.*;
 import io.github.cellrepair.service.OrdemServicoService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrdemServicoImpl implements OrdemServicoService {
 
+    private final AnexoOsMapper anexoOsMapper;
+    private final AnexoOsRepository anexoOsRepository;
     private final OrdemServicoRepository ordemServicoRepository;
     private final OrdemServicoMapper ordemServicoMapper;
     private final UserRepository userRepository;

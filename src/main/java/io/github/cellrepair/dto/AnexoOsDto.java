@@ -37,7 +37,7 @@ public class AnexoOsDto {
 
     @JsonView({OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class, OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class})
     @NotNull(groups = {OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class, OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class},
-            message = "O campo camArquivo é obrigatório.")
+            message = "O campo caminho do arquivo é obrigatório.")
     private String caminhoArquivo;
 
     @JsonView({OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class, OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class})

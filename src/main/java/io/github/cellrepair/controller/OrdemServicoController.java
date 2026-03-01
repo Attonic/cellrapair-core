@@ -40,13 +40,11 @@ public class OrdemServicoController {
         return ResponseEntity.ok().body(ordemServico);
     }
 
-
     @PostMapping
     public ResponseEntity<OrdemServicoDto> cadastrar(
-            @RequestBody
             @JsonView(OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class)
             @Validated(OrdemServicoDto.OrdemServicoView.OrdemServicoPost.class)
-            OrdemServicoDto ordemServicoDto
+            @RequestBody OrdemServicoDto ordemServicoDto
     ) {
         var ordemServico = ordemServicoService.save(ordemServicoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ordemServico);
@@ -55,10 +53,9 @@ public class OrdemServicoController {
     @PutMapping("/{id}")
     public ResponseEntity<OrdemServicoDto> atualizar(
             @PathVariable Long id,
-            @RequestBody
             @JsonView(OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class)
             @Validated(OrdemServicoDto.OrdemServicoView.OrdemServicoPut.class)
-            OrdemServicoDto ordemServicoDto
+            @RequestBody OrdemServicoDto ordemServicoDto
     ) {
         var ordemServico = ordemServicoService.update(ordemServicoDto, id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ordemServico);

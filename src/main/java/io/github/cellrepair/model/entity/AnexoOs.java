@@ -11,15 +11,15 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "anexo_os")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnexoOs implements Serializable {
+@Table(name = "anexo_os")
+public class AnexoOs {
 
     @Id
-    @Column(name = "id_anexo_os")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_anexo_os")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +34,7 @@ public class AnexoOs implements Serializable {
     private String tipoArquivo;
 
     @Column(name = "cam_arquivo", nullable = false, length = 500)
-    private String camArquivo;
+    private String caminhoArquivo;
 
     @Column(name = "data_upload")
     @CreationTimestamp

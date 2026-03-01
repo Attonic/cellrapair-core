@@ -64,12 +64,11 @@ public class OrdemServicoDto {
     @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Técnico da O.S deve ser informado.")
     private Long tecnicoId;
 
-    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    private List<AnexoOsDto> anexos;
-
     private Long usuarioId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
     private List<ItemOsDto> itensOs;
 
+    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
+    private List<AnexoOsDto> anexosOs;
 }

@@ -11,10 +11,12 @@ public interface AnexoOsMapper {
 
     @Mapping(target = "ordemServico.id", source = "ordemServicoId")
     @Mapping(target = "usuarioCriacao.id", source = "usuarioCriacaoId")
+    @Mapping(target = "caminhoArquivo", source = "caminhoArquivo")
     AnexoOs toEntity(AnexoOsDto anexoOsDto);
 
     @Mapping(target = "ordemServicoId", source = "ordemServico.id")
     @Mapping(target = "usuarioCriacaoId", source = "usuarioCriacao.id")
+    @Mapping(target = "caminhoArquivo", source = "caminhoArquivo")
     AnexoOsDto toDto(AnexoOs anexoOs);
 
     @Mapping(target = "id", ignore = true)

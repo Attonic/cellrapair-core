@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -72,21 +73,25 @@ public class OrdemServico implements Serializable {
     @JoinColumn(name = "id_tecnico", nullable = false)
     private Tecnico tecnico;
 
-    @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<AnexoOs> anexoOs;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_abertura")
     private Usuario usuario;
 
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ItemOs> itensOs;
+    private List<ItemOs> itensOs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<AnexoOs> anexosOs = new ArrayList<>();
 
     public void adicionarItem(ItemOs item) {
         this.itensOs.add(item);
         item.setOrdemServico(this);
     }
 
+    public void adicionarAnexo(AnexoOs anexo) {
+        this.anexosOs.add(anexo);
+        anexo.setOrdemServico(this);
+    }
 }

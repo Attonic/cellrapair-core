@@ -3,6 +3,7 @@ package io.github.cellrepair.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.github.cellrepair.model.entity.ItemOs;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -17,13 +18,15 @@ import java.util.List;
 public class OrdemServicoDto {
 
     public interface OrdemServicoView {
-        public static interface OrdemServicoPut {
+        public static interface OrdemServicoPost {
         }
 
-        public static interface OrdemServicoPost {
+        public static interface OrdemServicoPut {
         }
     }
 
+    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
+    private Long id;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
     private String imei;
@@ -50,23 +53,23 @@ public class OrdemServicoDto {
     private BigDecimal valorTotal;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Cliente da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Cliente da O.S deve ser informado.")
     private Long clienteId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Aparelho da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Aparelho da O.S deve ser informado.")
     private Long aparelhoId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Técnico da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Técnico da O.S deve ser informado.")
     private Long tecnicoId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
     private List<AnexoOsDto> anexos;
 
     private Long usuarioId;
+
+    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
+    private List<ItemOsDto> itensOs;
 
 }

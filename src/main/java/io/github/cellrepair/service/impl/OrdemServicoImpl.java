@@ -1,19 +1,24 @@
 package io.github.cellrepair.service.impl;
 
+import io.github.cellrepair.dto.ItemOsDto;
 import io.github.cellrepair.dto.OrdemServicoDto;
 import io.github.cellrepair.exception.NenhumResultadoException;
+import io.github.cellrepair.mapper.ItemOsMapper;
 import io.github.cellrepair.mapper.AnexoOsMapper;
 import io.github.cellrepair.mapper.OrdemServicoMapper;
+import io.github.cellrepair.model.entity.ItemOs;
 import io.github.cellrepair.model.entity.OrdemServico;
 import io.github.cellrepair.model.entity.Usuario;
 import io.github.cellrepair.repository.*;
 import io.github.cellrepair.service.OrdemServicoService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,9 @@ public class OrdemServicoImpl implements OrdemServicoService {
     private final AparelhoRepository aparelhoRepository;
     private final TecnicoRepository tecnicoRepository;
     private final ClienteRepository clienteRepository;
+    private final PecaRepository pecaRepository;
+    private final ItemOsMapper itemOsMapper;
+    private final ItemOsRepository itemOsRepository;
 
 
     @Override
@@ -58,7 +66,7 @@ public class OrdemServicoImpl implements OrdemServicoService {
         String loginUsuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
 
         var userDetails = userRepository.findByNomeUsuario(loginUsuarioLogado);
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new NenhumResultadoException("Usuário não encontrado.");
         }
 
@@ -70,11 +78,30 @@ public class OrdemServicoImpl implements OrdemServicoService {
         ordemServico.setCliente(cliente);
         ordemServico.setTecnico(tencnico);
 
+        List<ItemOsDto> itensDto = ordemServicoDto.getItensOs();
+        ordemServico.getItensOs().clear();
+
+        if (itensDto != null && !itensDto.isEmpty()) {
+            for (ItemOsDto itemDto : itensDto) {
+
+                var peca = pecaRepository.findById(itemDto.getPecaId())
+                        .orElseThrow(() -> new NenhumResultadoException("Peça não encontrada."));
+
+                ItemOs novoItem = itemOsMapper.toEntity(itemDto);
+
+                novoItem.setPeca(peca);
+                novoItem.setValorUnitario(peca.getPrecoVenda());
+
+                ordemServico.adicionarItem(novoItem);
+            }
+        }
+
         OrdemServico ordemServicoSalva = ordemServicoRepository.save(ordemServico);
         return ordemServicoMapper.toDto(ordemServicoSalva);
     }
 
     @Override
+    @Transactional
     public OrdemServicoDto update(OrdemServicoDto ordemServicoDto, Long id) {
 
         OrdemServico ordemServicoExistente = ordemServicoRepository.findById(id)
@@ -89,21 +116,46 @@ public class OrdemServicoImpl implements OrdemServicoService {
         var cliente = clienteRepository.findById(ordemServicoDto.getClienteId())
                 .orElseThrow(() -> new NenhumResultadoException("Cliente não encontrado."));
 
-        ordemServicoExistente.setImei(ordemServicoDto.getImei());
-        ordemServicoExistente.setCor(ordemServicoDto.getCor());
-        ordemServicoExistente.setAcessorios(ordemServicoDto.getAcessorios());
-        ordemServicoExistente.setSenha(ordemServicoDto.getSenha());
-        ordemServicoExistente.setDefeitoRelatado(ordemServicoDto.getDefeitoRelatado());
-        ordemServicoExistente.setLaudoTecnico(ordemServicoDto.getLaudoTecnico());
-        ordemServicoExistente.setStatus(ordemServicoDto.getStatus());
-        ordemServicoExistente.setValorTotal(ordemServicoDto.getValorTotal());
+        ordemServicoMapper.updateEntityFromDto(ordemServicoDto, ordemServicoExistente);
 
         ordemServicoExistente.setAparelho(aparelho);
         ordemServicoExistente.setCliente(cliente);
         ordemServicoExistente.setTecnico(tecnico);
 
-        OrdemServico ordemServicoAtualizada = ordemServicoRepository.save(ordemServicoExistente);
-        return ordemServicoMapper.toDto(ordemServicoAtualizada);
+        if (ordemServicoDto.getItensOs() != null) {
+            ordemServicoExistente.getItensOs().clear();
 
+            for (ItemOsDto itemDto : ordemServicoDto.getItensOs()) {
+                ItemOs novoItem = new ItemOs();
+                novoItem.setQuantidade(itemDto.getQuantidade());
+                novoItem.setValorUnitario(itemDto.getValorUnitario());
+
+                var peca = pecaRepository.findById(itemDto.getPecaId())
+                        .orElseThrow(() -> new NenhumResultadoException("Peça não encontrada."));
+
+                novoItem.setPeca(peca);
+                novoItem.setValorUnitario(peca.getPrecoVenda());
+
+                novoItem.setOrdemServico(ordemServicoExistente);
+
+                ordemServicoExistente.getItensOs().add(novoItem);
+            }
+
+        }
+
+        return ordemServicoMapper.toDto(ordemServicoRepository.save(ordemServicoExistente));
+    }
+
+    @Override
+    @Transactional
+    public OrdemServicoDto updateItemOs(OrdemServicoDto ordemServicoDto, Long id, Long idItemOs) {
+        var ordemServico = ordemServicoRepository.findById(id).get();
+
+        var itemOs = ordemServico.getItensOs().stream()
+                .filter(item -> item.getId().equals(idItemOs))
+                .findFirst()
+                .orElseThrow(() -> new NenhumResultadoException("Item da ordem de serviço não encontrado."));
+
+        return ordemServicoMapper.toDto(ordemServicoRepository.save(ordemServico));
     }
 }

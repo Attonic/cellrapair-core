@@ -3,6 +3,7 @@ package io.github.cellrepair.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -78,5 +79,14 @@ public class OrdemServico implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_abertura")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ItemOs> itensOs;
+
+    public void adicionarItem(ItemOs item) {
+        this.itensOs.add(item);
+        item.setOrdemServico(this);
+    }
 
 }

@@ -1,3 +1,4 @@
+-- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -105,8 +106,8 @@ CREATE TABLE IF NOT EXISTS `cellrepair`.`ordem_servico` (
     `senha` VARCHAR(50) NULL,
     `id_tecnico` BIGINT UNSIGNED NULL,
     `dt_entrada` TIMESTAMP NOT NULL,
-    `defeito_relatado` VARCHAR(255) NULL,
-    `laudo_tecnico` VARCHAR(255) NULL,
+    `defeito_relatado` VARCHAR(600) NULL,
+    `laudo_tecnico` VARCHAR(500) NULL,
     `status` VARCHAR(50) NULL,
     `valor_total` DECIMAL(10,2) NULL,
     `dt_saida` TIMESTAMP NULL,
@@ -166,12 +167,12 @@ CREATE TABLE IF NOT EXISTS `cellrepair`.`peca` (
 DROP TABLE IF EXISTS `cellrepair`.`item_os` ;
 
 CREATE TABLE IF NOT EXISTS `cellrepair`.`item_os` (
-                                                      `id_itens_os` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                                      `id_item_os` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                                                       `id_os` BIGINT UNSIGNED NOT NULL,
                                                       `id_peca` BIGINT UNSIGNED NOT NULL,
                                                       `qtd` INT NOT NULL DEFAULT 0,
                                                       `valor_unitario` DECIMAL(10,2) NULL,
-    PRIMARY KEY (`id_itens_os`),
+    PRIMARY KEY (`id_item_os`),
     INDEX `fk_itens_id_os` (`id_os` ASC) VISIBLE,
     INDEX `fk_itens_id_peca` (`id_peca` ASC) VISIBLE,
     CONSTRAINT `fk_itens_id_os`

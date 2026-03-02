@@ -5,9 +5,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +46,9 @@ public class Usuario implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UsuarioRoles role;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<OrdemServico> ordemServicos = new ArrayList<>();
 
     public Usuario(String nomeUsuario, String senha, UsuarioRoles role){
         this.nomeUsuario = nomeUsuario;

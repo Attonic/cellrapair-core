@@ -23,7 +23,6 @@ public class OrdemServicoDto {
 
         public static interface OrdemServicoPut {
         }
-
     }
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
@@ -54,18 +53,15 @@ public class OrdemServicoDto {
     private BigDecimal valorTotal;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Cliente da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Cliente da O.S deve ser informado.")
     private Long clienteId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Aparelho da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Aparelho da O.S deve ser informado.")
     private Long aparelhoId;
 
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
-    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class},
-            message = "Técnico da O.S deve ser informado.")
+    @NotNull(groups = {OrdemServicoView.OrdemServicoPost.class}, message = "Técnico da O.S deve ser informado.")
     private Long tecnicoId;
 
     private Long usuarioId;
@@ -73,4 +69,6 @@ public class OrdemServicoDto {
     @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
     private List<ItemOsDto> itensOs;
 
+    @JsonView({OrdemServicoView.OrdemServicoPost.class, OrdemServicoView.OrdemServicoPut.class})
+    private List<AnexoOsDto> anexosOs;
 }

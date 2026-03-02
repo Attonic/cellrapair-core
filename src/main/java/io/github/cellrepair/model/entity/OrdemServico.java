@@ -2,7 +2,7 @@ package io.github.cellrepair.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.github.cellrepair.exception.NenhumResultadoException;
+import jakarta.persistence.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -79,11 +79,19 @@ public class OrdemServico implements Serializable {
 
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ItemOs> itensOs;
+    private List<ItemOs> itensOs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<AnexoOs> anexosOs = new ArrayList<>();
 
     public void adicionarItem(ItemOs item) {
         this.itensOs.add(item);
         item.setOrdemServico(this);
     }
 
+    public void adicionarAnexo(AnexoOs anexo) {
+        this.anexosOs.add(anexo);
+        anexo.setOrdemServico(this);
+    }
 }

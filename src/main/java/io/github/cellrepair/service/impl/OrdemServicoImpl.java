@@ -1,10 +1,13 @@
 package io.github.cellrepair.service.impl;
 
+import io.github.cellrepair.dto.AnexoOsDto;
 import io.github.cellrepair.dto.ItemOsDto;
 import io.github.cellrepair.dto.OrdemServicoDto;
 import io.github.cellrepair.exception.NenhumResultadoException;
 import io.github.cellrepair.mapper.ItemOsMapper;
+import io.github.cellrepair.mapper.AnexoOsMapper;
 import io.github.cellrepair.mapper.OrdemServicoMapper;
+import io.github.cellrepair.model.entity.AnexoOs;
 import io.github.cellrepair.model.entity.ItemOs;
 import io.github.cellrepair.model.entity.OrdemServico;
 import io.github.cellrepair.model.entity.Usuario;
@@ -17,12 +20,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrdemServicoImpl implements OrdemServicoService {
 
+    private final AnexoOsMapper anexoOsMapper;
     private final OrdemServicoRepository ordemServicoRepository;
     private final OrdemServicoMapper ordemServicoMapper;
     private final UserRepository userRepository;
@@ -31,8 +36,6 @@ public class OrdemServicoImpl implements OrdemServicoService {
     private final ClienteRepository clienteRepository;
     private final PecaRepository pecaRepository;
     private final ItemOsMapper itemOsMapper;
-    private final ItemOsRepository itemOsRepository;
-
 
     @Override
     public Page<OrdemServicoDto> findAll(Pageable pageable) {
@@ -93,6 +96,20 @@ public class OrdemServicoImpl implements OrdemServicoService {
             }
         }
 
+        List<AnexoOsDto> anexosDto = ordemServicoDto.getAnexosOs();
+        ordemServico.getAnexosOs().clear();
+
+        if (anexosDto != null && !anexosDto.isEmpty()) {
+            for (AnexoOsDto anexoDto : anexosDto) {
+
+                AnexoOs novoAnexo = anexoOsMapper.toEntity(anexoDto);
+                novoAnexo.setUsuarioCriacao(usuarioLogado);
+                novoAnexo.setCaminhoArquivo(anexoDto.getCaminhoArquivo());
+
+                ordemServico.adicionarAnexo(novoAnexo);
+            }
+        }
+
         OrdemServico ordemServicoSalva = ordemServicoRepository.save(ordemServico);
         return ordemServicoMapper.toDto(ordemServicoSalva);
     }
@@ -137,7 +154,28 @@ public class OrdemServicoImpl implements OrdemServicoService {
 
                 ordemServicoExistente.getItensOs().add(novoItem);
             }
+        }
 
+        if (ordemServicoDto.getAnexosOs() != null) {
+            ordemServicoExistente.getAnexosOs().clear();
+
+            for (AnexoOsDto anexoDto : ordemServicoDto.getAnexosOs()) {
+                AnexoOs novoAnexo = new AnexoOs();
+
+                var userDetails = userRepository.findByNomeUsuario(SecurityContextHolder.getContext().getAuthentication().getName());
+                if (userDetails == null) {
+                    throw new NenhumResultadoException("Usuário não encontrado.");
+                }
+                Usuario usuarioLogado = (Usuario) userDetails;
+                novoAnexo.setUsuarioCriacao(usuarioLogado);
+
+                novoAnexo.setNomeArquivo(anexoDto.getNomeArquivo());
+                novoAnexo.setTipoArquivo(anexoDto.getTipoArquivo());
+                novoAnexo.setCaminhoArquivo(anexoDto.getCaminhoArquivo());
+                novoAnexo.setObservacao(anexoDto.getObservacao());
+                novoAnexo.setOrdemServico(ordemServicoExistente);
+                ordemServicoExistente.getAnexosOs().add(novoAnexo);
+            }
         }
 
         return ordemServicoMapper.toDto(ordemServicoRepository.save(ordemServicoExistente));

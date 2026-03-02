@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {ItemOsMapper.class})
+@Mapper(componentModel = "spring", uses = {ItemOsMapper.class, AnexoOsMapper.class})
 public interface OrdemServicoMapper {
 
     @Mapping(target = "cliente.id", source = "clienteId")
@@ -23,6 +23,8 @@ public interface OrdemServicoMapper {
     OrdemServicoDto toDto(OrdemServico ordemServico);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "anexosOs", ignore = true)
+    @Mapping(target = "itensOs", ignore = true)
     void updateEntityFromDto(OrdemServicoDto ordemServicoDto, @MappingTarget OrdemServico ordemServico);
 
 }

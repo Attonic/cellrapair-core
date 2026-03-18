@@ -1,7 +1,9 @@
 package io.github.cellrepair.service.impl;
 
+import io.github.cellrepair.dto.UsuarioAtivoDto;
 import io.github.cellrepair.dto.UsuarioDto;
 import io.github.cellrepair.exception.ConflitoException;
+import io.github.cellrepair.exception.NenhumResultadoException;
 import io.github.cellrepair.mapper.UsuarioMapper;
 import io.github.cellrepair.model.entity.Usuario;
 import io.github.cellrepair.repository.UserRepository;
@@ -20,6 +22,18 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final UsuarioMapper usuarioMapper;
 
+    @Override
+    public Usuario findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NenhumResultadoException("Usuário não encontrado."));
+    }
+
+    @Override
+    public UsuarioDto atualizarStatus(Long id, UsuarioAtivoDto usuarioAtivoDto) {
+        var usuario = findById(id);
+        usuario.setAtivo(usuarioAtivoDto.ativo());
+        return usuarioMapper.toDto(usuario);
+    }
 
     @Override
     public Page<UsuarioDto> findAll(Pageable pageable) {

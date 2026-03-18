@@ -1,7 +1,9 @@
 package io.github.cellrepair.mapper;
 
+import io.github.cellrepair.dto.UsuarioAtivoDto;
 import io.github.cellrepair.dto.UsuarioDto;
 import io.github.cellrepair.model.entity.Usuario;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
